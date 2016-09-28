@@ -77,18 +77,20 @@ def sub_downloader(path):
             req = urllib2.Request(url, '', headers)
             response = urllib2.urlopen(req).read()
         
-        # step 2. get first subtitle from subtitle list
-        url = eval(response)[0]['Files'][0]['Link'].replace('\u0026', '&')
-		
-        if pyVer == 3:
-            req = urllib.request.Request(url, None, headers)
-            response = urllib.request.urlopen(req).read()
+        if len(response) == 1:
+            print "Not Found"
         else:
-            req = urllib2.Request(url, '', headers)
-            response = urllib2.urlopen(req).read()
-        with open (path+".srt","wb") as subtitle:
-            subtitle.write(response)
+            # step 2. get first subtitle from subtitle list
+            url = eval(response)[0]['Files'][0]['Link'].replace('\u0026', '&')
+    		
+            if pyVer == 3:
+                req = urllib.request.Request(url, None, headers)
+                response = urllib.request.urlopen(req).read()
+            else:
+                req = urllib2.Request(url, '', headers)
+                response = urllib2.urlopen(req).read()
+            with open (path+".srt","wb") as subtitle:
+                subtitle.write(response)
 
 path = sys.argv[1]
-#path = 'E:\\ipv6\\Divergent.2014.RETAIL.1080p.WEB-DL.H264.AC3-EVO\\Divergent.2014.RETAIL.1080p.WEB-DL.H264.AC3-EVO.mkv'
 sub_downloader(path)
